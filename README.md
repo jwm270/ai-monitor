@@ -74,4 +74,74 @@ Frontend terminal → Ctrl + C
 
 ---
 
+## 🛠 Troubleshooting
+
+### Port 4000 Already in Use (`EADDRINUSE`)
+Error:
+```
+Error: listen EADDRINUSE: address already in use :::4000
+```
+Fix:
+```powershell
+taskkill /F /IM node.exe
+npm run dev
+```
+
+---
+
+### OneDrive File Lock Issues (`EPERM: operation not permitted`)
+Cause: OneDrive sometimes locks files inside `C:\Users\<you>\OneDrive\...`.
+
+Fix: Move your project to a non-OneDrive folder (e.g., `C:\dev\ai-monitor`).
+
+---
+
+### Execution Policy Blocks `npm` / `npx`
+Error:
+```
+npm.ps1 cannot be loaded because running scripts is disabled on this system
+```
+Fix (temporary for current session):
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+Or permanent (safer scope):
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+```
+
+---
+
+### Prisma Errors: Missing Relations
+Error:
+```
+The relation field ... is missing an opposite relation field
+```
+Fix: Update `prisma/schema.prisma` so every relation has an opposite side. Run:
+```powershell
+npx prisma format
+npx prisma generate
+```
+
+---
+
+### Seed Data Not Appearing
+If login fails with demo users:
+```powershell
+node prisma/seed.js
+```
+This reseeds demo accounts like:
+- `admin@demo.local / demo1234`
+- `manager@demo.local / demo1234`
+- `client@demo.local / demo1234`
+- `victim@demo.local / demo1234`
+
+---
+
+### Stopping Servers
+- Backend terminal → `Ctrl + C`
+- Frontend terminal → `Ctrl + C`
+
+---
+
 Keep this guide handy when working locally with AI Monitor 🚀
